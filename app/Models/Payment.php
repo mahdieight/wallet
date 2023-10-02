@@ -27,4 +27,9 @@ class Payment extends Model
     protected $casts = [
         'status' => PaymentStatusEnum::class
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
