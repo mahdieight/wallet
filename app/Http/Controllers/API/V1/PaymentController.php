@@ -16,7 +16,11 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        $payments = Payment::paginate(20);
+        return response()->json([
+            'messages' => 'Payment list found successfully',
+            'data' => PaymentResource::collection($payments)
+        ]);
     }
 
     /**
@@ -34,7 +38,7 @@ class PaymentController extends Controller
     {
         $payment = Payment::create(array_merge($request->all(), ['user_id' => 1]));
 
-        return response()->json([
+        return response('', 201)->json([
             'messages' => 'payment successfuly created',
             'data' => new PaymentResource($payment)
         ]);
