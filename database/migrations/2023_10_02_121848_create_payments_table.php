@@ -1,9 +1,9 @@
 <?php
 
+use App\Enums\Payment\PaymentStatusEnum;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Enums\PaymentStatusEnum;
 
 return new class extends Migration
 {
@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
-            $table->enum('status', PaymentStatusEnum::getValues())->default(PaymentStatusEnum::getValue('Pending'));
+            $table->enum('status', PaymentStatusEnum::values())->default(PaymentStatusEnum::PENDING->value);
             $table->double('amount');
             $table->string('priceunit');
             $table->timestamps();
