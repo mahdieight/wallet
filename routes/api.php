@@ -8,4 +8,5 @@ Route::prefix('v1')->group(function () {
     Route::post('payments', [PaymentController::class, 'store']);
     Route::patch('payments/{payment}/reject', [PaymentController::class, 'reject']);
     Route::get('payments', [PaymentController::class, 'index']);
+    Route::get('payments/{payment}', [PaymentController::class, 'show']);
 });

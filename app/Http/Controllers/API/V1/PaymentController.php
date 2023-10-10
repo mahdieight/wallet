@@ -39,18 +39,23 @@ class PaymentController extends Controller
     {
         $payment = Payment::create(array_merge($request->all(), ['user_id' => 1]));
 
-        return response('', 201)->json([
-            'messages' => 'payment successfuly created',
-            'data' => new PaymentResource($payment)
-        ]);
+        return response([
+            'message' => 'payment successfuly created',
+            'data' => [new PaymentResource($payment)],
+            'errors' => []
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Payment $payment)
     {
-        //
+        return response([
+            'message' => 'payment successfuly created',
+            'data' => [new PaymentResource($payment)],
+            'errors' => []
+        ], 200);
     }
 
     /**
@@ -82,17 +87,18 @@ class PaymentController extends Controller
      */
     public function reject(Payment $payment)
     {
-        if ($payment->status != PaymentStatusEnum::PENDING->value) {
-            throw new BadRequestException("You can only decline pending payments" , 403);
+        if ($payment->status->value != PaymentStatusEnum::PENDING->value) {
+            throw new BadRequestException("You can only decline pending payments", 403);
         }
 
         $payment->update([
             'status' => PaymentStatusEnum::REJECTED->value,
         ]);
 
-        return response('', 201)->json([
+        return response([
             'messages' => 'The payment was successfully rejected',
-            'data' => new PaymentResource($payment)
-        ]);
+            'data' => [new PaymentResource($payment)],
+            'errors' => []
+        ], 201);
     }
 }
