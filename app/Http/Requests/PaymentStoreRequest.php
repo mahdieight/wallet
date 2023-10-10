@@ -23,7 +23,7 @@ class PaymentStoreRequest extends FormRequest
     {
         return [
             "amount" => "required|numeric",
-            "priceunit" => "required|string",
+            "currency" => "required|string",
         ];
     }
 }
