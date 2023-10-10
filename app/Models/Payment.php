@@ -14,8 +14,8 @@ class Payment extends Model
         'user_id',
         'status',
         'amount',
-        'priceunit',
-    ];
+        'currency'
+        ];
 
     protected $hidden = ['id'];
 
@@ -31,5 +31,13 @@ class Payment extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected static function booted()
+    {
+        static::creating(function ($payment) {
+            $payment->unique_id = uniqid();
+
+        });
     }
 }
