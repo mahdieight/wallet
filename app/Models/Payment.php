@@ -40,4 +40,10 @@ class Payment extends Model
 
         });
     }
+
+
+    public function getRouteKeyName()
+    {
+        return 'unique_id';
+    }
 }
