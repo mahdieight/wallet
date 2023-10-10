@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Enums\PaymentStatusEnum;
+use App\Enums\Payment\PaymentStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentStoreRequest;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class PaymentController extends Controller
 {
@@ -74,5 +75,24 @@ class PaymentController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function reject(Payment $payment)
+    {
+        if ($payment->status != PaymentStatusEnum::PENDING->value) {
+            throw new BadRequestException("You can only decline pending payments" , 403);
+        }
+
+        $payment->update([
+            'status' => PaymentStatusEnum::REJECTED->value,
+        ]);
+
+        return response('', 201)->json([
+            'messages' => 'The payment was successfully rejected',
+            'data' => new PaymentResource($payment)
+        ]);
     }
 }
