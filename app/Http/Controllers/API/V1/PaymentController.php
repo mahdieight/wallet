@@ -19,7 +19,7 @@ class PaymentController extends Controller
     {
         $payments = Payment::paginate(20);
         return response()->json([
-            'messages' => 'Payment list found successfully',
+            'messages' => __('payment.messages.payment_list_found_successfully'),
             'data' => PaymentResource::collection($payments)
         ]);
     }
@@ -40,7 +40,7 @@ class PaymentController extends Controller
         $payment = Payment::create(array_merge($request->all(), ['user_id' => 1]));
 
         return response([
-            'message' => 'payment successfuly created',
+            'message' => __('payment.messages.payment_successfuly_created'),
             'data' => [new PaymentResource($payment)],
             'errors' => []
         ], 201);
@@ -52,7 +52,7 @@ class PaymentController extends Controller
     public function show(Payment $payment)
     {
         return response([
-            'message' => 'payment successfuly created',
+            'message' =>  __('payment.messages.payment_successfuly_found'),
             'data' => [new PaymentResource($payment)],
             'errors' => []
         ], 200);
@@ -88,7 +88,7 @@ class PaymentController extends Controller
     public function reject(Payment $payment)
     {
         if ($payment->status->value != PaymentStatusEnum::PENDING->value) {
-            throw new BadRequestException("You can only decline pending payments", 403);
+            throw new BadRequestException(__('payment.errors.you_can_only_decline_pending_payments'), 403);
         }
 
         $payment->update([
@@ -96,7 +96,7 @@ class PaymentController extends Controller
         ]);
 
         return response([
-            'messages' => 'The payment was successfully rejected',
+            'messages' => __('payment.messages.the_payment_was_successfully_rejected'),
             'data' => [new PaymentResource($payment)],
             'errors' => []
         ], 201);
