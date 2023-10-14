@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Enums\Payment\PaymentStatusEnum;
+use App\Events\PaymentRejected;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentStoreRequest;
 use App\Http\Resources\PaymentResource;
@@ -88,9 +89,9 @@ class PaymentController extends Controller
      */
     public function reject(Payment $payment)
     {
-        if ($payment->status->value != PaymentStatusEnum::PENDING->value) {
-            throw new BadRequestException(__('payment.errors.you_can_only_decline_pending_payments'), 403);
-        }
+        // if ($payment->status->value != PaymentStatusEnum::PENDING->value) {
+        //     throw new BadRequestException(__('payment.errors.you_can_only_decline_pending_payments'), 403);
+        // }
 
         $payment->update([
             'status' => PaymentStatusEnum::REJECTED->value,
@@ -98,7 +99,7 @@ class PaymentController extends Controller
 
         $message = $payment->user->name . " Dear, Payment " . $payment->unique_id . " Rejected.";
 
-        sendRejectPaymentEmail::dispatch($payment , $message);
+        PaymentRejected::dispatch($payment,$message);
 
         return response([
             'messages' => __('payment.messages.the_payment_was_successfully_rejected'),
