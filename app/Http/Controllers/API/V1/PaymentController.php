@@ -6,6 +6,7 @@ use App\Enums\Payment\PaymentStatusEnum;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentStoreRequest;
 use App\Http\Resources\PaymentResource;
+use App\Jobs\sendRejectPaymentEmail;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -94,6 +95,10 @@ class PaymentController extends Controller
         $payment->update([
             'status' => PaymentStatusEnum::REJECTED->value,
         ]);
+
+        $message = $payment->user->name . " Dear, Payment " . $payment->unique_id . " Rejected.";
+
+        sendRejectPaymentEmail::dispatch($payment , $message);
 
         return response([
             'messages' => __('payment.messages.the_payment_was_successfully_rejected'),
