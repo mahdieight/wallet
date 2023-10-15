@@ -22,7 +22,7 @@ class PaymentFactory extends Factory
             'unique_id' => uniqid(),
             'user_id' => User::first(),
             'status' => PaymentStatusEnum::PENDING->value,
-            'amount' => fake()->randomDigit,
+            'amount' => fake()->randomFloat(),
             'currency' => 'dollar',
         ];
     }
