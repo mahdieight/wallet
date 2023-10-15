@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Response\ResponseService;
 use Illuminate\Support\ServiceProvider;
-use ResponseService;
 
 class ResponseServiceProvider extends ServiceProvider
 {
