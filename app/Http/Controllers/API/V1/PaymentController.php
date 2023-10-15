@@ -86,9 +86,7 @@ class PaymentController extends Controller
             'status' => PaymentStatusEnum::REJECTED->value,
         ]);
 
-        $message = $payment->user->name . " Dear, Payment " . $payment->unique_id . " Rejected.";
-
-        PaymentRejected::dispatch($payment, $message);
+        PaymentRejected::dispatch($payment, PaymentStatusEnum::REJECTED->value);
 
         return Response::message('payment.messages.the_payment_was_successfully_rejected')->data(new PaymentResource($payment))->send();
     }

@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Enums\Payment\PaymentStatusEnum;
 use App\Models\Payment;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -18,7 +19,7 @@ class PaymentRejected
     /**
      * Create a new event instance.
      */
-    public function __construct(public Payment $payment , public string $message)
+    public function __construct(public Payment $payment , public PaymentStatusEnum $status)
     {
         //
     }

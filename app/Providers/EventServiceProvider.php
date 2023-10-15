@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Events\PaymentRejected;
+use App\Jobs\NotifyToPaymentOwnerAfterChangeStatus;
 use App\Listeners\SendRejectedPaymentEmail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -21,7 +22,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         PaymentRejected::class => [
-            SendRejectedPaymentEmail::class,
+            NotifyToPaymentOwnerAfterChangeStatus::class
         ],
     ];
 
