@@ -2,13 +2,13 @@
 
 namespace App\Providers;
 
+use App\Events\PaymentApproved;
 use App\Events\PaymentRejected;
 use App\Jobs\NotifyToPaymentOwnerAfterChangeStatus;
-use App\Listeners\SendRejectedPaymentEmail;
+use App\Listeners\CreateTransactionAfterApprovedPayment;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -24,6 +24,10 @@ class EventServiceProvider extends ServiceProvider
         PaymentRejected::class => [
             NotifyToPaymentOwnerAfterChangeStatus::class
         ],
+        PaymentApproved::class => [
+            CreateTransactionAfterApprovedPayment::class,
+            NotifyToPaymentOwnerAfterChangeStatus::class
+        ]
     ];
 
     /**

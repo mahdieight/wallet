@@ -22,6 +22,7 @@ return [
     ],
     "validations" => [],
     "errors" => [
-        "you_can_only_decline_pending_payments" => "You can only decline pending payments"
+        "you_can_only_decline_pending_payments" => "You can only decline pending payments",
+        "this_payment_has_already_been_used" => "This payment has already been used"
     ],
 ];

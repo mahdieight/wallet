@@ -3,9 +3,9 @@
 namespace App\Jobs;
 
 use App\Enums\Payment\PaymentStatusEnum;
+use App\Events\PaymentApproved;
 use App\Models\Payment;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -19,24 +19,21 @@ class NotifyToPaymentOwnerAfterChangeStatus implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(
-        public Payment $payment,
-        public PaymentStatusEnum $status
-    ) {
+    public function __construct()
+    {
         //
     }
 
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle(PaymentApproved $event): void
     {
-
-        $message = $this->payment->user->name . " Dear, Payment " . $this->payment->unique_id . ($this->status == PaymentStatusEnum::APPROVED->value ? ' Approved.' : ' Rejected.');
-        Mail::raw($message, function ($message) {
+        $message = $event->payment->user->name . " Dear, Payment " . $event->payment->unique_id . ($event->status->value == PaymentStatusEnum::APPROVED->value ? ' Approved.' : ' Rejected.');
+        Mail::raw($message, function ($message) use ($event) {
             $message->from('john@johndoe.com', 'John Doe');
             $message->sender('john@johndoe.com', 'John Doe');
-            $message->to($this->payment->user->email, $this->payment->user->email);
+            $message->to($event->payment->user->email, $event->payment->user->email);
             $message->subject('Test Mail');
         });
     }
