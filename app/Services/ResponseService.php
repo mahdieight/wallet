@@ -1,5 +1,6 @@
 <?php
-namespace App\Services\Response;
+
+namespace App\Services;
 
 class ResponseService
 {
@@ -17,7 +18,7 @@ class ResponseService
 
     public function message(string $message): ResponseService
     {
-        $this->message = $message;
+        $this->message = __($message);
         return $this;
     }
 
