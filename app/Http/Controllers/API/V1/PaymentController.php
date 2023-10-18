@@ -13,21 +13,44 @@ use App\Models\Payment;
 use App\Models\Transaction;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
+/**
+ * @OA\Info(
+ *      version="1.0.0",
+ *      title="Wallet",
+ * )
+ */
 class PaymentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *      path="/api/v1/payments",
+     *      operationId="getPaymentList",
+     *      tags={"Payments"},
+     *      summary="Get Payment List",
+     *      description="Returns payment list",
+     *      @OA\Response(response=201,description="Successful operation"),
+     *      @OA\Response(response=404, description="Payment List Not Found"),
+     * )
      */
     public function index()
     {
         $payments = Payment::paginate(20);
-        return Response::message('payment.messages.payment_list_found_successfully')->date(PaymentResource::collection($payments))->send();
+        return Response::message('payment.messages.payment_list_found_successfully')->data(PaymentResource::collection($payments))->send();
     }
 
 
 
+
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *      path="/api/v1/payments",
+     *      operationId="createPayment",
+     *      tags={"Payments"},
+     *      summary="Create Payment",
+     *      description="Store a newly created resource in storage.",
+     *      @OA\Response(response=200,description="Payment Created"),
+     *      @OA\Response(response=400, description="Bad request"),
+     * )
      */
     public function store(PaymentStoreRequest $request)
     {
@@ -35,8 +58,26 @@ class PaymentController extends Controller
         return Response::message('payment.messages.payment_successfuly_created')->data(new PaymentResource($payment))->status(200)->send();
     }
 
+
+
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *      path="/api/v1/payments/{id}",
+     *      operationId="getPayment",
+     *      tags={"Payments"},
+     *      summary="Get Payment",
+     *      description="Display the specified resource.",
+     *      @OA\Response(response=201,description="Payment Found"),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=404, description="Not Found"),
+     *      @OA\Parameter(
+     *         description="Payment id",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+
+     *     ),
+     * )
      */
     public function show(Payment $payment)
     {
@@ -44,16 +85,26 @@ class PaymentController extends Controller
     }
 
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+
 
     /**
-     * reject payment.
+     * @OA\Patch(
+     *      path="/api/v1/payments/{id}/reject",
+     *      operationId="rejectPayment",
+     *      tags={"Payments"},
+     *      summary="Reject Payment",
+     *      description="Display the specified resource.",
+     *      @OA\Response(response=201,description="Payment Successfuly Rejected"),
+     *      @OA\Response(response=403, description="Bad request"),
+     *      @OA\Response(response=404, description="Not Found"),
+     *      @OA\Parameter(
+     *         description="Payment id",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+
+     *     ),
+     * )
      */
     public function reject(Payment $payment)
     {
@@ -71,7 +122,23 @@ class PaymentController extends Controller
     }
 
     /**
-     * approve payment.
+     * @OA\Patch(
+     *      path="/api/v1/payments/{id}/approve",
+     *      operationId="approvePayment",
+     *      tags={"Payments"},
+     *      summary="Approve Payment",
+     *      description="Approve  payment",
+     *      @OA\Response(response=201,description="Payment Successfuly Approved"),
+     *      @OA\Response(response=403, description="Bad request"),
+     *      @OA\Response(response=404, description="Not Found"),
+     *      @OA\Parameter(
+     *         description="Payment id",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+
+     *     ),
+     * )
      */
     public function approve(Payment $payment)
     {

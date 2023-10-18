@@ -1,0 +1,130 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Wallet",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/payments": {
+            "get": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Get Payment List",
+                "description": "Returns payment list",
+                "operationId": "getPaymentList",
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Payment List Not Found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Create Payment",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "createPayment",
+                "responses": {
+                    "200": {
+                        "description": "Payment Created"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/api/v1/payments/{id}": {
+            "get": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Get Payment",
+                "description": "Display the specified resource.",
+                "operationId": "getPayment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Payment Found"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/payments/{id}/reject": {
+            "patch": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Reject Payment",
+                "description": "Display the specified resource.",
+                "operationId": "rejectPayment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Payment Successfuly Rejected"
+                    },
+                    "403": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/v1/payments/{id}/approve": {
+            "patch": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Approve Payment",
+                "description": "Approve  payment",
+                "operationId": "approvePayment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Payment id",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Payment Successfuly Approved"
+                    },
+                    "403": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        }
+    }
+}
