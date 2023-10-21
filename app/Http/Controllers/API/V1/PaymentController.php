@@ -13,12 +13,7 @@ use App\Models\Payment;
 use App\Models\Transaction;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
-/**
- * @OA\Info(
- *      version="1.0.0",
- *      title="Wallet",
- * )
- */
+
 class PaymentController extends Controller
 {
     /**
