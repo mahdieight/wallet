@@ -2,8 +2,10 @@
 
 namespace App\Listeners;
 
+use App\Models\Transaction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\DB;
 
 class UpdateUserBalance
 {
@@ -20,24 +22,13 @@ class UpdateUserBalance
      */
     public function handle(object $event): void
     {
-        $transactionBalance = 0;
-        $balances = DB::table('transactions')
+
+
+        $balances = Transaction::query()
             ->select('currency', DB::raw('SUM(amount) as total_amount'))
-            ->where('user_id', $event->transaction->user_id)
+            ->where('user_id', $event->payment->user->id)
             ->groupBy('currency')
-            ->get();
-
-        $balanceData = ['salam' => 550];
-        foreach ($balances as $balance) {
-            if ($event->transaction->currency == $balance->currency) {
-                $transactionBalance = $balance->total_amount;
-            }
-            $data[$balance->currency] =  $balance->total_amount;
-        }
-
-        $balanceData = json_encode($balanceData);
-
-        $event->transaction->user->update(['balances' => $balanceData]);
-        $event->transaction->update(['balance' => $transactionBalance]);
+            ->pluck('total_amount', 'currency');
+        $event->payment->user->update(['balance' => $balances->toJson()]);
     }
 }
