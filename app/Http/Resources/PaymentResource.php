@@ -17,7 +17,7 @@ class PaymentResource extends JsonResource
         return [
             'user' => $this->user,
             'amount' => $this->amount,
-            'currency_key' => $this->currency,
+            'currency' => $this->currency_key,
         ];
     }
 }
