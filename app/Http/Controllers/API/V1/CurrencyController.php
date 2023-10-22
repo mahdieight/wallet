@@ -79,7 +79,7 @@ class CurrencyController extends Controller
 
     /**
      * @OA\Patch(
-     *      path="/api/v1/currencies/{id}/active",
+     *      path="/api/v1/currencies/{key}/active",
      *      operationId="activeCurrency",
      *      tags={"Currency"},
      *      summary="Active Currency",
@@ -109,7 +109,7 @@ class CurrencyController extends Controller
 
     /**
      * @OA\Patch(
-     *      path="/api/v1/currencies/{id}/deactive",
+     *      path="/api/v1/currencies/{key}/deactive",
      *      operationId="deactiveCurrency",
      *      tags={"Currency"},
      *      summary="DeActive Currency",
