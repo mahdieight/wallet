@@ -153,6 +153,6 @@ class PaymentController extends Controller
 
         PaymentApproved::dispatch($payment, PaymentStatusEnum::APPROVED);
 
-        return Response::message('payment.messages.the_payment_was_successfully_rejected')->data(new PaymentResource($payment))->send();
+        return Response::message('payment.messages.the_payment_was_successfully_approved')->data(new PaymentResource($payment))->send();
     }
 }

@@ -18,7 +18,8 @@ return [
         "payment_list_found_successfully" => "Payment list found successfully",
         "payment_successfuly_created" => "Payment successfuly created",
         "payment_successfuly_found" => "Payment successfuly found",
-        "the_payment_was_successfully_rejected" => "The payment was successfully rejected"
+        "the_payment_was_successfully_rejected" => "The payment was successfully rejected",
+        "the_payment_was_successfully_approved" => "The payment was successfully approved"
     ],
     "validations" => [],
     "errors" => [

@@ -26,7 +26,7 @@ class CreateTransactionAfterApprovedPayment
             'user_id' => $event->payment->user_id,
             'payment_id' => $event->payment->id,
             'amount' => $event->payment->amount,
-            'currency' => $event->payment->currency,
+            'currency_key' => $event->payment->currency_key,
         ]);
     }
 }

@@ -22,13 +22,11 @@ class UpdateUserBalance
      */
     public function handle(object $event): void
     {
-
-
         $balances = Transaction::query()
-            ->select('currency', DB::raw('SUM(amount) as total_amount'))
+            ->select('currency_key', DB::raw('SUM(amount) as total_amount'))
             ->where('user_id', $event->payment->user->id)
-            ->groupBy('currency')
-            ->pluck('total_amount', 'currency');
+            ->groupBy('currency_key')
+            ->pluck('total_amount', 'currency_key');
         $event->payment->user->update(['balance' => $balances->toJson()]);
     }
 }
