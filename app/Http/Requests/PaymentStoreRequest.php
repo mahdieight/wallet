@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\ExistsActiveKeyCurrency;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PaymentStoreRequest extends FormRequest
@@ -23,7 +24,11 @@ class PaymentStoreRequest extends FormRequest
     {
         return [
             "amount" => "required|numeric",
-            "currency_key" => "required|string|exists:currencies,key",
+            "currency_key" => [
+                "required",
+                "string",
+                new ExistsActiveKeyCurrency()
+            ],
         ];
     }
 }
