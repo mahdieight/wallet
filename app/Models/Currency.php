@@ -26,4 +26,9 @@ class Currency extends Model
             $builder->where('is_active', true);
         });
     }
+
+    public function getRouteKeyName()
+    {
+        return 'key';
+    }
 }
