@@ -14,4 +14,6 @@ Route::prefix('v1')->group(function () {
 
     Route::get('currencies', [CurrencyController::class, 'index']);
     Route::post('currencies', [CurrencyController::class, 'store']);
+    Route::patch('currencies/{currency}/active' , [CurrencyController::class , 'active']);
+    Route::patch('currencies/{currency}/deactive' , [CurrencyController::class , 'deActive']);
 });
