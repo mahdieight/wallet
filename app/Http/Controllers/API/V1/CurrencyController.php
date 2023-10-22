@@ -13,19 +13,21 @@ use Illuminate\Http\Request;
 class CurrencyController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *      path="/api/v1/currencies",
+     *      operationId="getCurrencyList",
+     *      tags={"Currency"},
+     *      summary="Get Currency List",
+     *      description="Returns currency list",
+     *      @OA\Response(response=201,description="Successful operation"),
+     *      @OA\Response(response=404, description="Payment List Not Found"),
+     * )
      */
     public function index()
     {
-        //
-    }
+        $currencies = Currency::paginate(20);
+        return Response::message('payment.messages.payment_list_found_successfully')->data(CurrencyResource::collection($currencies))->send();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
