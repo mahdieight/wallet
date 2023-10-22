@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->dropForeign('currency_key');
+            $table->dropForeign(['currency_key']);
             $table->renameColumn('currency_key', 'currency');
 
         });
