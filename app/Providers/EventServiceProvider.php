@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
-use App\Events\PaymentApproved;
-use App\Events\PaymentRejected;
+use App\Events\Currency\CurrencyActivated;
+use App\Events\Currency\CurrencyCreated;
+use App\Events\Currency\CurrencyDeActivated;
+use App\Events\Payment\PaymentApproved;
+use App\Events\Payment\PaymentRejected;
 use App\Listeners\CreateTransactionAfterApprovedPayment;
 use App\Listeners\NotifyToPaymentOwnerAfterChangePaymentStatus;
 use App\Listeners\UpdateUserBalance;
@@ -21,8 +24,10 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
-            
+
         ],
+
+        // Payment Event
         PaymentRejected::class => [
             UpdateUserBalance::class,
             NotifyToPaymentOwnerAfterChangePaymentStatus::class
@@ -31,7 +36,12 @@ class EventServiceProvider extends ServiceProvider
             CreateTransactionAfterApprovedPayment::class,
             UpdateUserBalance::class,
             NotifyToPaymentOwnerAfterChangePaymentStatus::class
-        ]
+        ],
+
+        // Currency Event
+        CurrencyCreated::class => [],
+        CurrencyActivated::class => [],
+        CurrencyDeActivated::class => [],
     ];
 
     /**
