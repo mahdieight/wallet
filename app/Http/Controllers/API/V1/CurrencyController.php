@@ -76,6 +76,25 @@ class CurrencyController extends Controller
     }
 
 
+
+    /**
+     * @OA\Patch(
+     *      path="/api/v1/currencies/{id}/active",
+     *      operationId="activeCurrency",
+     *      tags={"Currency"},
+     *      summary="Active Currency",
+     *      description="Active Currency",
+     *      @OA\Response(response=201,description="Currency Successfully Activated"),
+     *      @OA\Response(response=403, description="Bad request"),
+     *      @OA\Response(response=404, description="Not Found"),
+     *      @OA\Parameter(
+     *         description="currency key",
+     *         in="path",
+     *         name="key",
+     *         required=true,
+     *     ),
+     * )
+     */
     public function active(Currency $currency)
     {
         if ($currency->is_active)  throw new BadRequestException(__('currency.errors.currency_is_currently_active_and_cannot_be_reactivated'));
@@ -88,6 +107,24 @@ class CurrencyController extends Controller
     }
 
 
+    /**
+     * @OA\Patch(
+     *      path="/api/v1/currencies/{id}/deactive",
+     *      operationId="deactiveCurrency",
+     *      tags={"Currency"},
+     *      summary="DeActive Currency",
+     *      description="DeActive Currency",
+     *      @OA\Response(response=201,description="Currency Successfully DeActivated"),
+     *      @OA\Response(response=403, description="Bad request"),
+     *      @OA\Response(response=404, description="Not Found"),
+     *      @OA\Parameter(
+     *         description="currency key",
+     *         in="path",
+     *         name="key",
+     *         required=true,
+     *     ),
+     * )
+     */
     public function deActive(Currency $currency)
     {
         if (!$currency->is_active)  throw new BadRequestException(__('currency.errors.currency_is_currently_inactive_and_cannot_be_reactivated'));
