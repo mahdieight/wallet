@@ -17,7 +17,9 @@ return [
         "currency_successfully_created" => "Currency successfully created",
 
     ],
-    "validations" => [],
+    "validations" => [
+        "selected_currency_is_not_active" => "The selected currency isn't active"
+    ],
     "errors" => [
     ],
 ];
