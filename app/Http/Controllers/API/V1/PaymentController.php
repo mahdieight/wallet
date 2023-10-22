@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\API\V1;
 
 use App\Enums\Payment\PaymentStatusEnum;
-use App\Events\PaymentApproved;
-use App\Events\PaymentRejected;
+use App\Events\Payment\PaymentApproved;
+use App\Events\Payment\PaymentRejected;
 use App\Facades\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentStoreRequest;

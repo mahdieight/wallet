@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace App\Events\Payment;
 
 use App\Enums\Payment\PaymentStatusEnum;
 use App\Models\Payment;

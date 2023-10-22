@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\PaymentApproved;
+use App\Events\Payment\PaymentApproved;
 use App\Models\Transaction;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
