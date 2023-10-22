@@ -14,7 +14,7 @@ class Payment extends Model
         'user_id',
         'status',
         'amount',
-        'currency'
+        'currency_key'
         ];
 
     protected $hidden = ['id'];

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Enums\Payment\PaymentStatusEnum;
+use App\Models\Currency;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,7 +24,7 @@ class PaymentFactory extends Factory
             'user_id' => User::first(),
             'status' => PaymentStatusEnum::PENDING->value,
             'amount' => fake()->randomFloat(),
-            'currency' => 'dollar',
+            'currency_key' => Currency::inRandomOrder()->first()->key,
         ];
     }
 }
