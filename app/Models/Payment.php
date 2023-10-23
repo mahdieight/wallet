@@ -15,7 +15,7 @@ class Payment extends Model
         'status',
         'amount',
         'currency_key'
-        ];
+    ];
 
     protected $hidden = ['id'];
 
@@ -33,11 +33,15 @@ class Payment extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function transaction()
+    {
+        return $this->belongsTo(Transaction::class);
+    }
+
     protected static function booted()
     {
         static::creating(function ($payment) {
             $payment->unique_id = uniqid();
-
         });
     }
 
