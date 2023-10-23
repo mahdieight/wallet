@@ -17,7 +17,7 @@ class Transaction extends Model
         parent::boot();
 
         static::created(function (Transaction $transaction) {
-            $exitsBalance = Transaction::query()->where('user_id', $transaction->user_id)->where('currency_key', $transaction->currency)->sum('amount');
+            $exitsBalance = Transaction::query()->where('user_id', $transaction->user_id)->where('currency_key', $transaction->currency_key)->sum('amount');
             $transaction->update(['balance' => $exitsBalance]);
         });
     }
@@ -27,4 +27,4 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class);
     }
-}
+};
