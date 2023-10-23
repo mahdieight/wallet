@@ -24,6 +24,8 @@ return [
     "validations" => [],
     "errors" => [
         "you_can_only_decline_pending_payments" => "You can only decline pending payments",
-        "this_payment_has_already_been_used" => "This payment has already been used"
+        "this_payment_has_already_been_used" => "This payment has already been used",
+        "you_have_a_similar_payment_in_the_system" => "You have made a similar payment :time and it is not possible to register again."
+
     ],
 ];
