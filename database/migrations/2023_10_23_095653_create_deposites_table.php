@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('from_user_id')->constrained();
             $table->bigInteger('to_user_id')->constrained();
-            $table->foreign('currencu_key')->references('key')->on('currencies');
+            $table->string('currency_key');
+            $table->foreign('currency_key')->references('key')->on('currencies');
             $table->double('amount');
             $table->timestamps();
         });
