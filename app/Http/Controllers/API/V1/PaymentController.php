@@ -11,6 +11,7 @@ use App\Http\Requests\PaymentStoreRequest;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
 use App\Models\Transaction;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 
@@ -158,11 +159,23 @@ class PaymentController extends Controller
             throw new BadRequestException('payment.errors.this_payment_has_already_been_used', 403);
         }
 
-        $payment->update([
-            'status' => PaymentStatusEnum::APPROVED->value,
-        ]);
+        DB::transaction(function () use ($payment) {
+            Transaction::create([
+                'user_id' => $payment->user_id,
+                'payment_id' => $payment->id,
+                'amount' => $payment->amount,
+                'currency_key' => $payment->currency_key,
+            ]);
+
+            $payment->update([
+                'status' => PaymentStatusEnum::APPROVED->value,
+            ]);
+        });
+
+
 
         PaymentApproved::dispatch($payment, PaymentStatusEnum::APPROVED);
+
 
         return Response::message('payment.messages.the_payment_was_successfully_approved')->data(new PaymentResource($payment))->send();
     }
