@@ -7,7 +7,6 @@ use App\Events\Currency\CurrencyCreated;
 use App\Events\Currency\CurrencyDeActivated;
 use App\Events\Payment\PaymentApproved;
 use App\Events\Payment\PaymentRejected;
-use App\Listeners\CreateTransactionAfterApprovedPayment;
 use App\Listeners\NotifyToPaymentOwnerAfterChangePaymentStatus;
 use App\Listeners\UpdateUserBalance;
 use Illuminate\Auth\Events\Registered;
@@ -33,7 +32,6 @@ class EventServiceProvider extends ServiceProvider
             NotifyToPaymentOwnerAfterChangePaymentStatus::class
         ],
         PaymentApproved::class => [
-            CreateTransactionAfterApprovedPayment::class,
             UpdateUserBalance::class,
             NotifyToPaymentOwnerAfterChangePaymentStatus::class
         ],
