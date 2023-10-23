@@ -150,13 +150,13 @@ class PaymentController extends Controller
     public function approve(Payment $payment)
     {
 
-        if ($payment->status->value != PaymentStatusEnum::PENDING->value) {
-            throw new BadRequestException(__('payment.errors.you_can_only_decline_pending_payments'), 403);
-        }
+        // if ($payment->status->value != PaymentStatusEnum::PENDING->value) {
+        //     throw new BadRequestException(__('payment.errors.you_can_only_decline_pending_payments'));
+        // }
 
-        $transactionExits = Transaction::wherePaymentId($payment->id)->first();
-        if ($transactionExits) {
-            throw new BadRequestException('payment.errors.this_payment_has_already_been_used', 403);
+        dd($payment->transaction());
+        if ($payment->transaction->get()) {
+            throw new BadRequestException('payment.errors.this_payment_has_already_been_used');
         }
 
         DB::transaction(function () use ($payment) {
