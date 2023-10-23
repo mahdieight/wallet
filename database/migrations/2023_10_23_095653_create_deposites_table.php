@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('deposites', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('from_user_id')->constrained();
+            $table->bigInteger('to_user_id')->constrained();
+            $table->foreign('currencu_key')->references('key')->on('currencies');
+            $table->double('amount');
             $table->timestamps();
         });
     }
