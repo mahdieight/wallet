@@ -14,6 +14,7 @@ Route::prefix('v1')->group(function () {
         Route::get('/{payment}', [PaymentController::class, 'show']);
         Route::patch('/{payment}/reject', [PaymentController::class, 'reject']);
         Route::patch('/{payment}/approve', [PaymentController::class, 'approve']);
+        Route::delete('/{payment}', [PaymentController::class, 'destroy']);
     });
 
     Route::prefix('currencies')->group(function () {

@@ -100,4 +100,26 @@ interface PaymentControllerInterface
      * )
      */
     public function approve(Payment $payment);
+
+
+    /**
+     * @OA\Delete(
+     *      path="/api/v1/payments/{id}",
+     *      operationId="DeletePayment",
+     *      tags={"Payments"},
+     *      summary="Delete Payment",
+     *      description="Delete  payment",
+     *      @OA\Response(response=201,description="Payment Successfuly Removed"),
+     *      @OA\Response(response=403, description="Bad request"),
+     *      @OA\Response(response=404, description="Not Found"),
+     *      @OA\Parameter(
+     *         description="Payment id",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+
+     *     ),
+     * )
+     */
+    public function destroy(Payment $payment);
 }

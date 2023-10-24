@@ -12,12 +12,15 @@ use App\Http\Requests\PaymentStoreRequest;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
 use App\Models\Transaction;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 
 class PaymentController extends Controller implements PaymentControllerInterface
 {
+
+    use SoftDeletes;
 
     public function index()
     {
@@ -69,9 +72,9 @@ class PaymentController extends Controller implements PaymentControllerInterface
     public function approve(Payment $payment)
     {
 
-        // if ($payment->status->value != PaymentStatusEnum::PENDING->value) {
-        //     throw new BadRequestException(__('payment.errors.you_can_only_decline_pending_payments'));
-        // }
+        if ($payment->status->value != PaymentStatusEnum::PENDING->value) {
+            throw new BadRequestException(__('payment.errors.you_can_only_decline_pending_payments'));
+        }
 
         dd($payment->transaction());
         if ($payment->transaction->get()) {
@@ -97,5 +100,16 @@ class PaymentController extends Controller implements PaymentControllerInterface
 
 
         return Response::message('payment.messages.the_payment_was_successfully_approved')->data(new PaymentResource($payment))->send();
+    }
+
+    public function destroy(Payment $payment)
+    {
+        if ($payment->status != PaymentStatusEnum::PENDING) {
+            return throw new BadRequestException(__('payment.errors.you_can_delete_pending_payments'));
+        }
+
+        $payment->delete();
+
+        return Response::message(__('payment.messages.payment_successfully_removed'))->send();
     }
 }
