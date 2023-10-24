@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Contracts\PaymentControllerInterface;
 use App\Enums\Payment\PaymentStatusEnum;
 use App\Events\Payment\PaymentApproved;
 use App\Events\Payment\PaymentRejected;
@@ -15,19 +16,9 @@ use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 
-class PaymentController extends Controller
+class PaymentController extends Controller implements PaymentControllerInterface
 {
-    /**
-     * @OA\Get(
-     *      path="/api/v1/payments",
-     *      operationId="getPaymentList",
-     *      tags={"Payments"},
-     *      summary="Get Payment List",
-     *      description="Returns payment list",
-     *      @OA\Response(response=201,description="Successful operation"),
-     *      @OA\Response(response=404, description="Payment List Not Found"),
-     * )
-     */
+
     public function index()
     {
         $payments = Payment::paginate(20);
@@ -35,19 +26,6 @@ class PaymentController extends Controller
     }
 
 
-
-
-    /**
-     * @OA\Post(
-     *      path="/api/v1/payments",
-     *      operationId="createPayment",
-     *      tags={"Payments"},
-     *      summary="Create Payment",
-     *      description="Store a newly created resource in storage.",
-     *      @OA\Response(response=200,description="Payment Created"),
-     *      @OA\Response(response=400, description="Bad request"),
-     * )
-     */
     public function store(PaymentStoreRequest $request)
     {
 
@@ -66,53 +44,12 @@ class PaymentController extends Controller
     }
 
 
-
-    /**
-     * @OA\Get(
-     *      path="/api/v1/payments/{id}",
-     *      operationId="getPayment",
-     *      tags={"Payments"},
-     *      summary="Get Payment",
-     *      description="Display the specified resource.",
-     *      @OA\Response(response=201,description="Payment Found"),
-     *      @OA\Response(response=400, description="Bad request"),
-     *      @OA\Response(response=404, description="Not Found"),
-     *      @OA\Parameter(
-     *         description="Payment id",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-
-     *     ),
-     * )
-     */
     public function show(Payment $payment)
     {
         return Response::message('payment.messages.payment_successfuly_found')->data(new PaymentResource($payment))->send();
     }
 
 
-
-
-    /**
-     * @OA\Patch(
-     *      path="/api/v1/payments/{id}/reject",
-     *      operationId="rejectPayment",
-     *      tags={"Payments"},
-     *      summary="Reject Payment",
-     *      description="Display the specified resource.",
-     *      @OA\Response(response=201,description="Payment Successfuly Rejected"),
-     *      @OA\Response(response=403, description="Bad request"),
-     *      @OA\Response(response=404, description="Not Found"),
-     *      @OA\Parameter(
-     *         description="Payment id",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-
-     *     ),
-     * )
-     */
     public function reject(Payment $payment)
     {
         if ($payment->status->value != PaymentStatusEnum::PENDING->value) {
@@ -128,25 +65,7 @@ class PaymentController extends Controller
         return Response::message('payment.messages.the_payment_was_successfully_rejected')->data(new PaymentResource($payment))->send();
     }
 
-    /**
-     * @OA\Patch(
-     *      path="/api/v1/payments/{id}/approve",
-     *      operationId="approvePayment",
-     *      tags={"Payments"},
-     *      summary="Approve Payment",
-     *      description="Approve  payment",
-     *      @OA\Response(response=201,description="Payment Successfuly Approved"),
-     *      @OA\Response(response=403, description="Bad request"),
-     *      @OA\Response(response=404, description="Not Found"),
-     *      @OA\Parameter(
-     *         description="Payment id",
-     *         in="path",
-     *         name="id",
-     *         required=true,
 
-     *     ),
-     * )
-     */
     public function approve(Payment $payment)
     {
 
