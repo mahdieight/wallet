@@ -57,11 +57,13 @@ class Handler extends ExceptionHandler
             ], 401);
         }
 
-        return response()->json([
-            'message' => __('error.server_error'),
-            'errors' =>  $exception->getCode() ? $exception->getCode() : [],
-            'data' => []
-        ], 500);
+
+        // dd(instanceof UnauthorizedException);
+        // return response()->json([
+        //     'message' => __('error.server_error'),
+        //     'errors' =>  $exception->getCode() ? $exception->getCode() : [],
+        //     'data' => []
+        // ], 500);
 
         return parent::render($request, $exception);
     }

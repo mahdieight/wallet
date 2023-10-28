@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Contracts\PaymentControllerInterface;
+use App\Contracts\Controller\API\V1\PaymentControllerInterface;
 use App\Enums\Payment\PaymentStatusEnum;
 use App\Events\Payment\PaymentApproved;
 use App\Events\Payment\PaymentRejected;
@@ -12,7 +12,6 @@ use App\Http\Requests\PaymentStoreRequest;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
 use App\Models\Transaction;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
@@ -20,7 +19,6 @@ use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 class PaymentController extends Controller implements PaymentControllerInterface
 {
 
-    use SoftDeletes;
 
     public function index()
     {

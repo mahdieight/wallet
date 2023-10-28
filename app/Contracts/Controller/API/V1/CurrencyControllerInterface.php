@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Contracts;
+namespace App\Contracts\Controller\API\V1;
 
 use App\Http\Requests\CurrencyStoreRequest;
 use App\Models\Currency;

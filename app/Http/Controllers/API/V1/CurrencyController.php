@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Contracts\CurrencyControllerInterface;
+use App\Contracts\Controller\API\V1\CurrencyControllerInterface;
 use App\Events\Currency\CurrencyActivated;
 use App\Events\Currency\CurrencyDeActivated;
 use App\Facades\Response;

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
-use App\Contracts\DepositControllerInterface;
+use App\Contracts\Controller\API\V1\DepositControllerInterface;
 use App\Http\Requests\DepositCreateRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;

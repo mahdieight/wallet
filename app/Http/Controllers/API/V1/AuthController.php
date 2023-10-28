@@ -4,9 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Facades\Response;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Validation\UnauthorizedException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
