@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\UnauthorizedException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Throwable;
 
@@ -47,6 +48,20 @@ class Handler extends ExceptionHandler
                 'data' => []
             ], 404);
         }
+
+        if ($exception instanceof UnauthorizedException) {
+            return response()->json([
+                'message' => __('auth.errors.an_authentication_error_occurred'),
+                'errors' =>  $exception->getCode() ? $exception->getCode() : [],
+                'data' => []
+            ], 401);
+        }
+
+        return response()->json([
+            'message' => __('error.server_error'),
+            'errors' =>  $exception->getCode() ? $exception->getCode() : [],
+            'data' => []
+        ], 500);
 
         return parent::render($request, $exception);
     }

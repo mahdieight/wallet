@@ -13,5 +13,6 @@ return [
     |
     */
 
-    "resource_not_found" => "Your requested data does not exist"
+    'resource_not_found' => 'Your requested data does not exist',
+    'server_error' => 'Server error'
 ];
