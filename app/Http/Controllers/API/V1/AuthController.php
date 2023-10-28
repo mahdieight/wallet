@@ -26,21 +26,17 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function login()
     {
-
-        dd($request->get());
-        dd($token = JWTAuth::getToken('value'));
         $credentials = request(['email', 'password']);
 
-        $token = auth()->setTTL(15)->attempt($credentials);
-        $refreshToken = auth()->setTTL(1440)->attempt($credentials);
+        $token = auth()->attempt($credentials);
         if (!$token) {
             throw new UnauthorizedException();
         }
 
 
-        return Response::message(__('auth.messages.you_have_successfully_logged_into_your_account'))->data($this->respondWithToken($token,$refreshToken))->send();
+        return Response::message(__('auth.messages.you_have_successfully_logged_into_your_account'))->data($this->respondWithToken($token))->send();
     }
 
     /**
@@ -83,11 +79,10 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken(string $token, string $refreshToken): array
+    protected function respondWithToken(string $token): array
     {
         return [
             'access_token' => $token,
-            'refresh_token' => $refreshToken,
             // 'token_type' => 'bearer',
             // 'expires_in' => auth()->factory()->getTTL() * 60
         ];

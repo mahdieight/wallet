@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function () {
 
     Route::group([
-        'middleware' => 'api',
         'prefix' => 'auth'
 
     ], function () {
@@ -23,7 +22,7 @@ Route::prefix('v1')->group(function () {
 
 
     Route::group([
-        'middleware' => 'api',
+        'middleware' => 'auth',
         'prefix' => 'payments'
 
     ], function () {
@@ -36,7 +35,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::group([
-        'middleware' => 'api',
+        'middleware' => 'auth',
         'prefix' => 'currencies'
 
     ], function () {
