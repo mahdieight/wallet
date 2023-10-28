@@ -15,7 +15,6 @@ class PaymentResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            // TODO Use UserResource
             'user' => new UserResource($this->user),
             'amount' => $this->amount,
             'currency' => $this->currency_key,
