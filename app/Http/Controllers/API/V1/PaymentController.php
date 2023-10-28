@@ -76,7 +76,6 @@ class PaymentController extends Controller implements PaymentControllerInterface
             throw new BadRequestException(__('payment.errors.you_can_only_decline_pending_payments'));
         }
 
-        dd($payment->transaction());
         if ($payment->transaction->get()) {
             throw new BadRequestException('payment.errors.this_payment_has_already_been_used');
         }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\V1\AuthController;
 use App\Http\Controllers\API\V1\CurrencyController;
 use App\Http\Controllers\API\V1\DepositController;
 use App\Http\Controllers\API\V1\PaymentController;
@@ -8,7 +9,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function () {
 
-    Route::prefix('payments')->group(function () {
+    Route::group([
+        'middleware' => 'api',
+        'prefix' => 'auth'
+
+    ], function () {
+
+        Route::post('login', [AuthController::class, 'login']);
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::post('refresh', [AuthController::class, 'refresh']);
+        Route::post('me', [AuthController::class, 'me']);
+    });
+
+
+    Route::group([
+        'middleware' => 'api',
+        'prefix' => 'payments'
+
+    ], function () {
         Route::post('/', [PaymentController::class, 'store']);
         Route::get('/', [PaymentController::class, 'index']);
         Route::get('/{payment}', [PaymentController::class, 'show']);
@@ -17,12 +35,19 @@ Route::prefix('v1')->group(function () {
         Route::delete('/{payment}', [PaymentController::class, 'destroy']);
     });
 
-    Route::prefix('currencies')->group(function () {
+    Route::group([
+        'middleware' => 'api',
+        'prefix' => 'currencies'
+
+    ], function () {
         Route::get('/', [CurrencyController::class, 'index']);
         Route::post('/', [CurrencyController::class, 'store']);
         Route::patch('/{currency}/active', [CurrencyController::class, 'active']);
         Route::patch('/{currency}/deactive', [CurrencyController::class, 'deActive']);
     });
+
+
+
 
 
 
