@@ -30,17 +30,11 @@ class PaymentController extends Controller implements PaymentControllerInterface
     public function store(PaymentStoreRequest $request)
     {
 
-        $user_id = 1;
-        $similarPayment = Payment::query()
-            ->where('currency_key', $request->currency_key)
-            ->where('user_id', $user_id)
-            ->where('created_at', '>=', now()->subMinutes(5))
-            ->first();
-
-
+        $similarPayment = auth()->user()->payments()->where('currency_key', $request->currency_key)->where('created_at', '>=', now()->subMinutes(5))->first();
         if ($similarPayment) throw new BadRequestException(__('payment.errors.you_have_a_similar_payment_in_the_system', ['time' => $similarPayment->created_at->diffForHumans()]));
 
-        $payment = Payment::create(array_merge($request->all(), ['user_id' => $user_id]));
+
+        $payment = auth()->user()->payments()->create($request->all());
         return Response::message('payment.messages.payment_successfuly_created')->data(new PaymentResource($payment))->status(200)->send();
     }
 
