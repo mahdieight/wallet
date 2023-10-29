@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Facades\Response;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Validation\UnauthorizedException;
 
 class AuthController extends Controller
@@ -24,7 +25,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(LoginRequest $request)
     {
         $credentials = request(['email', 'password']);
 
