@@ -9,6 +9,7 @@ use App\Events\Payment\PaymentRejected;
 use App\Facades\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PaymentStoreRequest;
+use App\Http\Resources\PaymentCollection;
 use App\Http\Resources\PaymentResource;
 use App\Models\Payment;
 use App\Models\Transaction;
@@ -22,8 +23,8 @@ class PaymentController extends Controller implements PaymentControllerInterface
 
     public function index()
     {
-        $payments = Payment::paginate(20);
-        return Response::message('payment.messages.payment_list_found_successfully')->data(PaymentResource::collection($payments))->send();
+        $payments = Payment::paginate();
+        return Response::message('payment.messages.payment_list_found_successfully')->data(new PaymentCollection($payments))->send();
     }
 
 
