@@ -16,5 +16,6 @@ return [
     'resource_not_found' => 'Your requested data does not exist',
     'server_error' => 'Server error',
     'method_not_allowed' => 'Method Not Allowed',
-    'the_sent_parameters_are_invalid' => 'The sent parameters are invalid'
+    'the_sent_parameters_are_invalid' => 'The sent parameters are invalid',
+    'too_many_request' => 'Too Many Request'
 ];

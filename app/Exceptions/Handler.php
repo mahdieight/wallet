@@ -5,6 +5,7 @@ namespace App\Exceptions;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException as ValidationValidationException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -77,6 +78,14 @@ class Handler extends ExceptionHandler
                 'errors' => (isset($exception->validator) ? $exception->validator->getMessageBag() : []),
                 'data' => []
             ], 422);
+        }
+
+        if($exception instanceof ThrottleRequestsException){
+            return response()->json([
+                'message' => __('error.too_many_request'),
+                'errors' => (isset($exception->validator) ? $exception->validator->getMessageBag() : []),
+                'data' => []
+            ], 429);
         }
 
         return response()->json([
