@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Enums\Payment\PaymentStatusEnum;
 use App\Models\Payment;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -27,9 +28,13 @@ class RemovePendingPayments extends Command
      */
     public function handle()
     {
-        $payments = Payment::where('created_at' , '<=' , now()->subMinutes(1440));
+        Payment::where([
+            ['status', PaymentStatusEnum::PENDING->value],
+            ['created_at', '<=', now()->subMinutes(1440)]
+        ])->chunk(50, function ($payments) {
+            $payments->delete();
+        });
 
-        $payments->delete();
 
         $this->info('Payment Successfully Destroy');
     }
