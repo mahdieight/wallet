@@ -187,4 +187,11 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+
+    'global' => [
+        'payment' => [
+            'similar_payment_registration_limit_per_minute' => 5
+        ]
+    ]
+
 ];

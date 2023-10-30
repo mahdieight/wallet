@@ -30,10 +30,13 @@ class PaymentController extends Controller implements PaymentControllerInterface
 
     public function store(PaymentStoreRequest $request)
     {
-
-        $similarPayment = auth()->user()->payments()->where('currency_key', $request->currency_key)->where('created_at', '>=', now()->subMinutes(5))->first();
-        if ($similarPayment) throw new BadRequestException(__('payment.errors.you_have_a_similar_payment_in_the_system', ['time' => $similarPayment->created_at->diffForHumans()]));
-
+        $similarPayment = auth()->user()->payments()
+            ->where('currency_key', $request->currency_key)
+            ->where('created_at', '>=', now()->subMinutes(config('app.global.payment.similar_payment_registration_limit_per_minute')))
+            ->first();
+        if ($similarPayment) {
+            throw new BadRequestException(__('payment.errors.you_have_a_similar_payment_in_the_system', ['time' => $similarPayment->created_at->diffForHumans()]));
+        }
 
         $payment = auth()->user()->payments()->create($request->all());
         return Response::message('payment.messages.payment_successfuly_created')->data(new PaymentResource($payment))->status(200)->send();
@@ -48,8 +51,8 @@ class PaymentController extends Controller implements PaymentControllerInterface
 
     public function reject(Payment $payment)
     {
-        if ($payment->status->value != PaymentStatusEnum::PENDING->value) {
-            throw new BadRequestException(__('payment.errors.you_can_only_decline_pending_payments'), 403);
+        if ($payment->status != PaymentStatusEnum::PENDING) {
+            throw new BadRequestException(__('payment.errors.you_can_only_decline_pending_payments'));
         }
 
         $payment->update([
@@ -65,22 +68,20 @@ class PaymentController extends Controller implements PaymentControllerInterface
     public function approve(Payment $payment)
     {
 
-        if ($payment->status->value != PaymentStatusEnum::PENDING->value) {
+        if ($payment->status != PaymentStatusEnum::PENDING) {
             throw new BadRequestException(__('payment.errors.you_can_only_decline_pending_payments'));
         }
 
-        if ($payment->transaction->get()) {
+        if ($payment->transaction()->exists()) {
             throw new BadRequestException('payment.errors.this_payment_has_already_been_used');
         }
 
         DB::transaction(function () use ($payment) {
-            Transaction::create([
-                'user_id' => $payment->user_id,
-                'payment_id' => $payment->id,
+            $payment->transaction()->create([
                 'amount' => $payment->amount,
                 'currency_key' => $payment->currency_key,
+                'user_id' => $payment->user_id,
             ]);
-
             $payment->update([
                 'status' => PaymentStatusEnum::APPROVED->value,
             ]);
