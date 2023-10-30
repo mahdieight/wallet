@@ -8,6 +8,7 @@ use App\Events\Currency\CurrencyDeActivated;
 use App\Facades\Response;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CurrencyStoreRequest;
+use App\Http\Resources\CurrencyCollection;
 use App\Http\Resources\CurrencyResource;
 use App\Models\Currency;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -18,7 +19,7 @@ class CurrencyController extends Controller implements CurrencyControllerInterfa
     public function index()
     {
         $currencies = Currency::paginate(20);
-        return Response::message('payment.messages.payment_list_found_successfully')->data(CurrencyResource::collection($currencies))->send();
+        return Response::message('payment.messages.payment_list_found_successfully')->data(new CurrencyCollection($currencies))->send();
     }
 
     
@@ -36,7 +37,7 @@ class CurrencyController extends Controller implements CurrencyControllerInterfa
     {
         if ($currency->is_active)  throw new BadRequestException(__('currency.errors.currency_is_currently_active_and_cannot_be_reactivated'));
 
-        $currency->update(['is_active' => 1]);
+        $currency->update(['is_active' => true]);
 
         CurrencyActivated::dispatch($currency);
 
@@ -48,7 +49,7 @@ class CurrencyController extends Controller implements CurrencyControllerInterfa
     {
         if (!$currency->is_active)  throw new BadRequestException(__('currency.errors.currency_is_currently_inactive_and_cannot_be_reactivated'));
 
-        $currency->update(['is_active' => 0]);
+        $currency->update(['is_active' => false]);
 
         CurrencyDeActivated::dispatch($currency);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Currency;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -15,9 +16,16 @@ class CurrencyResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'name' => $this->name,
-            'symbol' => $this->symbol,
-            'iso_code' => $this->iso_code,
+            'docs' => CurrencyResource::collection($this->collection),
+            'meta' => [
+                'perPage' => $this->perPage(),
+                'totalDocs' => $this->total(),
+                'totalPages' => $this->lastPage(),
+                'currentPage'=> $this->currentPage(),
+                'nextPage' => $this->nextPageUrl(),
+                'prevPage' => $this->previousPageUrl(),
+            ]
+
         ];
     }
 }
