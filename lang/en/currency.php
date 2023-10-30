@@ -25,6 +25,7 @@ return [
     ],
     "errors" => [
         "currency_is_currently_active_and_cannot_be_reactivated" =>"The currency is currently active and cannot be reactivated",
-        "currency_is_currently_inactive_and_cannot_be_reactivated" => "The currency is currently inactive and cannot be reactivated"
+        "currency_is_currently_inactive_and_cannot_be_reactivated" => "The currency is currently inactive and cannot be reactivated",
+        'it_is_not_possible_to_deactivate_this_currency_due_to_its_use_in_the_system' => 'It is not possible to deactivate this currency due to its use in the system'
     ],
 ];
