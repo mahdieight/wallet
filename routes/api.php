@@ -51,5 +51,5 @@ Route::prefix('v1')->group(function () {
 
 
 
-    Route::post('deposit/transfer', [DepositController::class, 'transfer']);
+    Route::post('deposits/transfer', [DepositController::class, 'transfer']);
 });

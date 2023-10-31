@@ -77,7 +77,7 @@ class PaymentController extends Controller implements PaymentControllerInterface
         }
 
         DB::transaction(function () use ($payment) {
-            $payment->transaction()->create([
+            $transaction = $payment->transaction()->create([
                 'amount' => $payment->amount,
                 'currency_key' => $payment->currency_key,
                 'user_id' => $payment->user_id,
@@ -85,11 +85,12 @@ class PaymentController extends Controller implements PaymentControllerInterface
             $payment->update([
                 'status' => PaymentStatusEnum::APPROVED->value,
             ]);
+
+            PaymentApproved::dispatch($payment, $transaction,  PaymentStatusEnum::APPROVED);
         });
 
 
 
-        PaymentApproved::dispatch($payment, PaymentStatusEnum::APPROVED);
 
 
         return Response::message('payment.messages.the_payment_was_successfully_approved')->data(new PaymentResource($payment))->send();

@@ -29,7 +29,7 @@ class DepositCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id' => "required|numeric|exists:users,id",
+            'base_user_id' => "required|numeric|exists:users,id",
             'target_user_id' => "required|numeric|exists:users,id",
             'amount' => "required|numeric|min:1",
             'currency_key' => [

@@ -4,6 +4,7 @@ namespace App\Events\Payment;
 
 use App\Enums\Payment\PaymentStatusEnum;
 use App\Models\Payment;
+use App\Models\Transaction;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -19,7 +20,7 @@ class PaymentApproved
     /**
      * Create a new event instance.
      */
-    public function __construct(public Payment $payment, public PaymentStatusEnum $status)
+    public function __construct(public ?Payment $payment, public Transaction $transaction,  public PaymentStatusEnum $status)
     {
         //
     }
