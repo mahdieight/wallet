@@ -17,5 +17,6 @@ return [
     'server_error' => 'Server error',
     'method_not_allowed' => 'Method Not Allowed',
     'the_sent_parameters_are_invalid' => 'The sent parameters are invalid',
-    'too_many_request' => 'Too Many Request'
+    'too_many_request' => 'Too Many Request',
+    'url_not_found' => 'Url Not Found',
 ];

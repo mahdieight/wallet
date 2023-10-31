@@ -10,6 +10,7 @@ use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException as ValidationValidationException;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -40,60 +41,42 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($exception instanceof BadRequestException) {
-            return response()->json([
-                'message' => $exception->getMessage(),
-                'errors' => (isset($exception->validator) ? $exception->validator->getMessageBag() : []),
-                'data' => []
-            ], 400);
+            return $this->renderError($exception, 400);
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            return $this->renderError($exception, 404, __('error.url_not_found'));
         }
 
         if ($exception instanceof ModelNotFoundException) {
-
-            return response()->json([
-                'message' => __('error.resource_not_found'),
-                'errors' => (isset($exception->validator) ? $exception->validator->getMessageBag() : []),
-                'data' => []
-            ], 404);
+            return $this->renderError($exception, 404, __('error.resource_not_found'));
         }
 
         if ($exception instanceof UnauthorizedException) {
-            return response()->json([
-                'message' => __('auth.errors.an_authentication_error_occurred'),
-                'errors' => (isset($exception->validator) ? $exception->validator->getMessageBag() : []),
-                'data' => []
-            ], 401);
+            return $this->renderError($exception, 401, __('auth.errors.an_authentication_error_occurred'));
         }
 
         if ($exception instanceof MethodNotAllowedHttpException) {
-            return response()->json([
-                'message' => __('error.method_not_allowed'),
-                'errors' => (isset($exception->validator) ? $exception->validator->getMessageBag() : []),
-                'data' => []
-            ], 403);
+            return $this->renderError($exception, 403, __('errors.method_not_allowed'));
         }
 
         if ($exception instanceof ValidationValidationException) {
-            return response()->json([
-                'message' => __('error.the_sent_parameters_are_invalid'),
-                'errors' => (isset($exception->validator) ? $exception->validator->getMessageBag() : []),
-                'data' => []
-            ], 422);
+            return $this->renderError($exception, 422, __('errors.the_sent_parameters_are_invalid'));
         }
 
-        if($exception instanceof ThrottleRequestsException){
-            return response()->json([
-                'message' => __('error.too_many_request'),
-                'errors' => (isset($exception->validator) ? $exception->validator->getMessageBag() : []),
-                'data' => []
-            ], 429);
+        if ($exception instanceof ThrottleRequestsException) {
+            return $this->renderError($exception, 429, __('errors.too_many_request'));
         }
 
+        return $this->renderError($exception, 500, __('errors.server_error'));
+    }
+
+    private function renderError(Throwable $exception, int $errorCode, ?string $message = null)
+    {
         return response()->json([
-            'message' => __('error.server_error'),
-            'errors' =>  $exception->getCode() ? $exception->getCode() : [],
+            'message' => ($message ? $message : $exception->getMessage()),
+            'errors' => (isset($exception->validator) ? $exception->validator->getMessageBag() : []),
             'data' => []
-        ], 500);
-
-        return parent::render($request, $exception);
+        ], $errorCode);
     }
 }
