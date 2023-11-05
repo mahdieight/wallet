@@ -35,7 +35,7 @@ services:
     networks:
       - lemp_stack
     volumes:
-      - "./logs/php.log:/var/log/fpm-php.www.log"
+      - "./php.ini:/usr/local/etc/php/php.ini"
     depends_on:
       mysql:
         condition: service_healthy 
