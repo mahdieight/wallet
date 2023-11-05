@@ -1,3 +1,4 @@
+# Stage 1: Install Composer dependencies
 FROM composer:2.6.5 AS composer
 WORKDIR /app
 COPY composer.lock composer.json /app/
