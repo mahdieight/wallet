@@ -1,7 +1,10 @@
-FROM php:8.2-fpm
+FROM composer:2.6.5 AS composer
+WORKDIR /app
+COPY composer.lock composer.json /app/
+RUN composer update --ignore-platform-reqs --no-scripts
 
-# Copy composer.lock and composer.json
-COPY composer.lock composer.json /var/www/html/
+# Stage 2: Final image
+FROM php:8.2-fpm
 
 # Set working directory
 WORKDIR /var/www/html
@@ -22,37 +25,33 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libonig-dev \
     libwebp-dev
+
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install extensions
 RUN docker-php-ext-install pdo_mysql mbstring zip exif pcntl
-#RUN docker-php-ext-configure gd --with-gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp
-
 RUN docker-php-ext-install gd opcache
 
-# Install composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-# Add user for laravel application
+# Add user for the Laravel application
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www www
 
 # Copy existing application directory contents
 COPY . /var/www/html
+
+# Copy opcache config
 COPY ./opcache.ini /usr/local/etc/php/conf.d/opcache.ini
+
 # Copy existing application directory permissions
 COPY --chown=www:www . /var/www/html
 
-# Change current user to www
+# Copy composer dependencies from the composer stage
+COPY --chown=www:www --from=composer /app/vendor /var/www/html/vendor
+
+# Change the current user to www
 USER www
-
-# Composer 
-RUN composer update
-
-# Build the database structure
-#CMD php artisan migrate
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
