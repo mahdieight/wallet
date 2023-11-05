@@ -26,6 +26,8 @@ services:
       context: .
       dockerfile: Dockerfile
     image: wallet:latest
+    env_file:
+      - ./.env
     container_name: wallet
     hostname: wallet
     restart: unless-stopped
