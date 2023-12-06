@@ -54,7 +54,6 @@ services:
        MYSQL_DATABASE: 'laravel'
        MYSQL_USER: 'wallet'
        MYSQL_PASSWORD: 'password'
-       MYSQL_ALLOW_EMPTY_PASSWORD: 1
        SERVICE_TAGS: dev
        SERVICE_NAME: mysql
     volumes:
